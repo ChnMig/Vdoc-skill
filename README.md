@@ -18,7 +18,17 @@ examples/
 
 ## Install
 
-Install this directory as a skill in your agent runtime. For agents that use a skills folder, copy or link this repository as the `vdoc` skill folder so that `SKILL.md` is at the skill root.
+Clone this repository into the standard agent skill directory, with `SKILL.md` at the `vdoc` skill root:
+
+```sh
+# Personal installation, available to all workspaces
+git clone --depth 1 https://github.com/ChnMig/Vdoc-skill.git "$HOME/.agents/skills/vdoc"
+
+# Or install only for the current repository
+git clone --depth 1 https://github.com/ChnMig/Vdoc-skill.git .agents/skills/vdoc
+```
+
+If the target already exists, update that existing checkout instead of cloning over it.
 
 Pair it with the Vdoc MCP adapter from `Vdoc-mcp/`; the skill describes the workflow, while MCP provides the tools.
 
