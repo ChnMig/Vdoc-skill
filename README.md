@@ -39,11 +39,12 @@ test -f "$VDOC_SKILL_DIR/SKILL.md"
 
 The command derives its commit from the external reviewed lock so this
 repository does not make an impossible self-referential claim about its own
-future commit. If the target already exists, verify its current `HEAD`; upgrade
-only by fetching and checking out the commit from a newer reviewed lock. Do
-not use an unpinned `git pull` for an installed Skill. A standalone immutable
-install channel is not claimed until a release tag or checksummed bootstrap is
-published.
+future commit. The reviewed lock is distributed in the checksummed
+[`v0.1.0-rc.1` workspace bootstrap](https://github.com/ChnMig/Vdoc/releases/tag/v0.1.0-rc.1);
+verify its `.sha256` file before running the workspace initializer. If the
+target already exists, verify its current `HEAD`; upgrade only by fetching and
+checking out the commit from a newer reviewed lock. Do not use an unpinned
+`git pull` for an installed Skill.
 
 Pair it with the Vdoc MCP adapter from `Vdoc-mcp/`; the skill describes the workflow, while MCP provides the tools.
 
