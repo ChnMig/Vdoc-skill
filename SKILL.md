@@ -66,6 +66,7 @@ get_doc_draft
 - After `compare_api_versions`, optionally call `get_change_summary` when the user asks for a concise frontend summary or when the raw diff needs grouping into `must_handle`, `breaking`, `optional`, and `non_breaking` buckets.
 - For OpenAPI submission, use draft tools only: `create_api_version_draft`, `update_api_version_draft`, then `submit_api_version_draft`. Human Admin/SuperAdmin review publishes versions; v0.1 MCP has no direct publish tool.
 - For Markdown documents, use `get_latest_doc` for current stable Markdown content, `compare_doc_versions` for plain line-level diffs, and draft tools only for proposed edits.
+- Draft creation requires `branch_id` and `version_name`. Draft updates keep the draft's existing branch: do not send `branch_id`; send the updated content and only the metadata fields that should change.
 
 ## Endpoint Integration Workflow
 
@@ -131,7 +132,6 @@ Update a draft:
       "project_id": "proj_placeholder",
       "document_id": "doc_placeholder",
       "draft_id": "draft_placeholder",
-      "branch_id": "branch_placeholder",
       "version_name": "1.2.0",
       "changelog": "Update the draft after local schema correction.",
       "source_git_commit_id": "commit_placeholder",
@@ -261,7 +261,6 @@ Create, inspect, update, and submit a Markdown draft:
       "project_id": "proj_placeholder",
       "document_id": "doc_placeholder",
       "draft_id": "draft_placeholder",
-      "branch_id": "branch_placeholder",
       "version_name": "1.2.0",
       "changelog": "Refine the Markdown draft after review.",
       "source_git_commit_id": "commit_placeholder",
