@@ -18,17 +18,32 @@ examples/
 
 ## Install
 
-Clone this repository into the standard agent skill directory, with `SKILL.md` at the `vdoc` skill root:
+Install the exact commit pinned by the workspace release lock into the standard
+agent skill directory, with `SKILL.md` at the `vdoc` skill root:
 
 ```sh
-# Personal installation, available to all workspaces
-git clone --depth 1 https://github.com/ChnMig/Vdoc-skill.git "$HOME/.agents/skills/vdoc"
-
-# Or install only for the current repository
-git clone --depth 1 https://github.com/ChnMig/Vdoc-skill.git .agents/skills/vdoc
+# Personal installation; use .agents/skills/vdoc for repository scope instead.
+VDOC_SKILL_DIR="$HOME/.agents/skills/vdoc"
+VDOC_WORKSPACE_LOCK="${VDOC_WORKSPACE_LOCK:-../workspace.lock.json}"
+VDOC_SKILL_COMMIT="$(jq -er '.repositories[] | select(.path == "Vdoc-skill") | .commit' "$VDOC_WORKSPACE_LOCK")"
+printf '%s' "$VDOC_SKILL_COMMIT" | grep -Eq '^[0-9a-f]{40}$'
+test ! -e "$VDOC_SKILL_DIR"
+mkdir -p "$(dirname -- "$VDOC_SKILL_DIR")"
+git init "$VDOC_SKILL_DIR"
+git -C "$VDOC_SKILL_DIR" remote add origin https://github.com/ChnMig/Vdoc-skill.git
+git -C "$VDOC_SKILL_DIR" fetch --depth 1 origin "$VDOC_SKILL_COMMIT"
+git -C "$VDOC_SKILL_DIR" checkout --detach FETCH_HEAD
+test "$(git -C "$VDOC_SKILL_DIR" rev-parse HEAD)" = "$VDOC_SKILL_COMMIT"
+test -f "$VDOC_SKILL_DIR/SKILL.md"
 ```
 
-If the target already exists, update that existing checkout instead of cloning over it.
+The command derives its commit from the external reviewed lock so this
+repository does not make an impossible self-referential claim about its own
+future commit. If the target already exists, verify its current `HEAD`; upgrade
+only by fetching and checking out the commit from a newer reviewed lock. Do
+not use an unpinned `git pull` for an installed Skill. A standalone immutable
+install channel is not claimed until a release tag or checksummed bootstrap is
+published.
 
 Pair it with the Vdoc MCP adapter from `Vdoc-mcp/`; the skill describes the workflow, while MCP provides the tools.
 
