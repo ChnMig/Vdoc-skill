@@ -26,17 +26,40 @@ Use this skill when a user needs Vdoc project document facts, API contract facts
 
 ## Valid v0.1 MCP Tools
 
+<!-- VDOC_MCP_TOOL_INVENTORY_START -->
+```text
+list_projects
+list_documents
+list_api_versions
+list_doc_versions
+get_latest_schema
+get_endpoint_detail
+compare_api_versions
+get_change_summary
+create_api_version_draft
+update_api_version_draft
+submit_api_version_draft
+get_api_version_draft
+get_latest_doc
+compare_doc_versions
+create_doc_draft
+update_doc_draft
+submit_doc_draft
+get_doc_draft
+```
+<!-- VDOC_MCP_TOOL_INVENTORY_END -->
+
 - Discovery tools: `list_projects`, `list_documents`.
 - API read tools: `list_api_versions`, `get_latest_schema`, `get_endpoint_detail`, `compare_api_versions`, `get_change_summary`, `get_api_version_draft`.
 - API draft tools: `create_api_version_draft`, `update_api_version_draft`, `submit_api_version_draft`.
-- Markdown read tools: `get_latest_doc`, `compare_doc_versions`.
+- Markdown read tools: `list_doc_versions`, `get_latest_doc`, `compare_doc_versions`.
 - Markdown draft tools: `create_doc_draft`, `update_doc_draft`, `submit_doc_draft`, `get_doc_draft`.
 - Direct publish tools are unavailable in v0.1. Do not call direct publish operations or present them as available MCP capabilities.
 
 ## Mandatory MCP Workflow
 
 - Always call JSON-RPC `tools/list` if unsure which Vdoc MCP tools are available.
-- Resolve IDs with `list_projects`, `list_documents`, and `list_api_versions` when the user gives names instead of IDs.
+- Resolve project and document IDs with `list_projects` and `list_documents`. Resolve published version IDs with `list_api_versions` for OpenAPI or `list_doc_versions` for Markdown; never pass a version name where a version ID is required.
 - Use `document_id` for API and Markdown document tools.
 - You must call `get_endpoint_detail` before generating endpoint integration code or client types.
 - You must call `compare_api_versions` before migration advice or frontend impact analysis.
@@ -65,7 +88,7 @@ Use this skill when a user needs Vdoc project document facts, API contract facts
 
 1. Resolve `project_id` and `document_id` with `list_projects` and `list_documents`.
 2. Call `get_latest_doc` before quoting or editing Markdown document content.
-3. Call `compare_doc_versions` before describing Markdown changes between two published versions.
+3. Before comparing published Markdown versions, call `list_doc_versions` to resolve `from_version_id` and `to_version_id`, then call `compare_doc_versions` with those IDs.
 4. For Markdown draft submission, use `create_doc_draft`, `update_doc_draft`, optional `get_doc_draft`, then `submit_doc_draft`.
 5. Use `markdown_content` for Markdown draft content and keep it tied to the Vdoc-returned document.
 
@@ -156,6 +179,21 @@ Get latest Markdown content:
 ```
 
 Compare two Markdown versions:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": "list-doc-versions-example",
+  "method": "tools/call",
+  "params": {
+    "name": "list_doc_versions",
+    "arguments": {
+      "project_id": "proj_placeholder",
+      "document_id": "doc_placeholder"
+    }
+  }
+}
+```
 
 ```json
 {

@@ -18,6 +18,7 @@ const v01ToolSchemas = new Map([
   ["list_projects", { required: [], optional: [] }],
   ["list_documents", { required: ["project_id"], optional: [] }],
   ["list_api_versions", { required: ["project_id", "document_id"], optional: [] }],
+  ["list_doc_versions", { required: ["project_id", "document_id"], optional: [] }],
   ["get_latest_schema", { required: ["project_id", "document_id"], optional: ["branch_id"] }],
   ["get_endpoint_detail", { required: ["project_id", "document_id", "version_id", "endpoint_id"], optional: [] }],
   ["compare_api_versions", { required: ["project_id", "document_id", "from_version_id", "to_version_id"], optional: [] }],
@@ -43,6 +44,7 @@ test("Vdoc skill required content is present and safe", () => {
     "Do not infer or hallucinate endpoint fields, parameters, response properties, enum values, auth schemes, servers, breaking-change claims, or Markdown text",
     "Always call JSON-RPC `tools/list` if unsure",
     "Use `document_id` for API and Markdown document tools",
+    "Before comparing published Markdown versions, call `list_doc_versions`",
     "You must call `get_endpoint_detail` before generating endpoint integration code or client types",
     "You must call `compare_api_versions` before migration advice or frontend impact analysis",
     "draft tools only",
@@ -67,7 +69,7 @@ test("Vdoc skill required content is present and safe", () => {
   assertTemplateTerms("templates/endpoint-integration.md", ["get_endpoint_detail", "method", "path", "operationId", "parameters", "request body", "responses", "security", "servers", "required fields", "enum values"]);
 
   assert.equal(requiredSkillFiles.length, 5);
-  assert.equal(v01ToolSchemas.size, 17);
+  assert.equal(v01ToolSchemas.size, 18);
 });
 
 test("Vdoc skill JSON-RPC examples use valid v0.1 tool payloads", () => {
