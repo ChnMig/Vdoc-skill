@@ -40,7 +40,7 @@ test -f "$VDOC_SKILL_DIR/SKILL.md"
 The command derives its commit from the external reviewed lock so this
 repository does not make an impossible self-referential claim about its own
 future commit. The reviewed lock is distributed in the checksummed
-[`v0.1.0-rc.1` workspace bootstrap](https://github.com/ChnMig/Vdoc/releases/tag/v0.1.0-rc.1);
+[`v0.1.0-rc.2` Docker Compose workspace bootstrap](https://github.com/ChnMig/Vdoc/releases/tag/v0.1.0-rc.2);
 verify its `.sha256` file before running the workspace initializer. If the
 target already exists, verify its current `HEAD`; upgrade only by fetching and
 checking out the commit from a newer reviewed lock. Do not use an unpinned
