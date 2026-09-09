@@ -1,3 +1,7 @@
+<p>
+  <img src="assets/vdoc-logo.png" width="96" height="96" alt="Vdoc logo" />
+</p>
+
 # Vdoc Skill
 
 Vdoc Skill is the installable agent workflow package for Vdoc. It teaches AI agents when and how to use Vdoc MCP for API contract facts, Markdown document facts, endpoint integration, migration analysis, and draft submission.
