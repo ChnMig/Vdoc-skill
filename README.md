@@ -96,6 +96,14 @@ The dry-run does not publish packages or deploy services.
 - Never expose raw JWTs, MCP tokens, DB passwords, storage secrets, or `Authorization` header values in examples, logs, screenshots, issues, or final output.
 - Direct publish tools are unavailable in v0.1; human Admin/SuperAdmin review publishes versions.
 
+## Automated Releases
+
+For a new version, update `package.json` and `package-lock.json` together with `npm version 0.1.1 --no-git-tag-version` (substitute the intended version), commit the changes, and push the matching `v0.1.1` tag. CI requires the tag to match both manifests, runs the existing checks, and creates a [GitHub Release](https://github.com/ChnMig/Vdoc-skill/releases) containing `vdoc-skill-<version>.tgz` and `SHA256SUMS`. A tag such as `v0.1.1-rc.1` creates a prerelease; ordinary branch pushes and pull requests run checks only. Existing releases are not overwritten.
+
+For local packaging, run `npm run release:package -- v0.1.0` with the version in the manifests. Output stays in the ignored `.artifacts/release/` directory. The workflow uploads the installable package to GitHub Releases; npm registry publication remains separate.
+
+After downloading a release matching the reviewed workspace lock and verifying `SHA256SUMS`, extract its `package/` contents into a new Skill directory with `--strip-components=1`, so `SKILL.md` is directly at the `vdoc` skill root. The archive includes references, templates, examples, and evaluation cases.
+
 ## Validate
 
 ```sh

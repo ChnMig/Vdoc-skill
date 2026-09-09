@@ -15,6 +15,7 @@
     "LICENSE"
   ],
   "scripts": {
+    "release:package": "bash scripts/package-release.sh",
     "test": "node --test test/*.test.mjs"
   },
   "engines": {
