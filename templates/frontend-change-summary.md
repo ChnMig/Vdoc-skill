@@ -6,6 +6,7 @@ Use this template after calling `compare_api_versions` and, when helpful, `get_c
 
 - Project: `{{project_id_or_name}}`
 - Document: `{{document_id_or_name}}`
+- Branches: `{{from_branch_id_or_name}}` → `{{to_branch_id_or_name}}`
 - From version: `{{from_version_id_or_name}}`
 - To version: `{{to_version_id_or_name}}`
 - MCP calls used: `compare_api_versions` `{{diff_id}}`, optional `get_change_summary`
@@ -14,9 +15,11 @@ Use this template after calling `compare_api_versions` and, when helpful, `get_c
 
 Use this section for diff items where `must_handle` is `true` or `is_breaking` is `true`.
 
-| Location | Message | Old Value | New Value | Frontend Impact | Required Action |
+Show both flags independently; inclusion in this section does not imply that both flags are true.
+
+| Location | Message | Old Value | New Value | Frontend Impact | Suggested Action |
 |---|---|---|---|---|---|
-| `{{item.location}}` | `{{item.message}}` | `{{item.old_value}}` | `{{item.new_value}}` | `{{item.frontend_impact}}` | `{{action_required_before_upgrade}}` |
+| `{{item.location}}` | `{{item.message}}` | `{{item.old_value}}` | `{{item.new_value}}` | `{{item.frontend_impact}}` | `{{action_based_on_flags_and_consumer_usage}}` |
 
 Checklist:
 
@@ -39,10 +42,10 @@ Checklist:
 
 ## Suggested Frontend Work Plan
 
-- First fix all `must_handle` / breaking changes.
+- First address items marked `must_handle`; assess other breaking changes against the consumer's actual usage.
 - Then decide whether optional/non-breaking changes should be adopted for product value.
 - If Vdoc MCP did not return enough endpoint detail for code changes, call `get_endpoint_detail` for the affected endpoint before generating code.
 
 ## v0.1 Boundary
 
-Vdoc v0.1 provides API contract facts, diff summaries, and guidance through MCP. Do not claim automatic frontend modification is supported.
+Vdoc MCP supplies contract facts and draft operations. The host agent may apply local changes when the user requests implementation; report the files changed and relevant verification. MCP itself cannot publish a version or edit the consumer repository.

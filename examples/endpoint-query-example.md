@@ -12,7 +12,31 @@ Use this workflow before generating endpoint integration code, client types, req
 }
 ```
 
+## Resolve The Target
+
+Use `list_projects` and `list_documents` to identify the requested document. Use `list_document_branches` to resolve its branch, then select the requested entry from `list_api_versions` by branch and version name. Use the returned IDs below.
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": "endpoint-list-example",
+  "method": "tools/call",
+  "params": {
+    "name": "list_api_endpoints",
+    "arguments": {
+      "project_id": "proj_placeholder",
+      "document_id": "doc_placeholder",
+      "version_id": "ver_placeholder",
+      "method": "GET",
+      "path": "/widgets/{id}"
+    }
+  }
+}
+```
+
 ## Query Endpoint Detail
+
+Replace `endpoint_placeholder` with the `id` returned for the matching method and path. An operationId or a URL path is not an endpoint ID.
 
 ```json
 {

@@ -12,6 +12,9 @@ The skill does not store data, compute diffs, or talk to Vdoc directly. Vdoc MCP
 
 ```text
 SKILL.md
+references/
+  draft-workflows.md
+  mcp-tools.json
 templates/
   endpoint-integration.md
   frontend-change-summary.md
@@ -51,6 +54,8 @@ verify its `.sha256` file before running the workspace initializer. If the
 target already exists, verify its current `HEAD`; upgrade only by fetching and
 checking out the commit from a newer reviewed lock. Do not use an unpinned
 `git pull` for an installed Skill.
+
+The current Skill uses `list_document_branches` and `list_api_endpoints` when the backend exposes them. Upgrade Backend together with Skill for complete ID discovery; older release locks may not include those tools. The skill falls back to exact user-provided IDs instead of guessing.
 
 Pair it with the [Vdoc MCP adapter](https://github.com/ChnMig/Vdoc-mcp); the skill describes the workflow, while MCP provides the tools.
 
@@ -96,3 +101,5 @@ The dry-run does not publish packages or deploy services.
 ```sh
 npm test
 ```
+
+`npm test` validates packaged references and example arguments. [Behavior evaluation cases](evals/cases.md) cover real agent decisions and should be run in an isolated fixture workspace when evaluating a model; static checks do not establish model behavior.

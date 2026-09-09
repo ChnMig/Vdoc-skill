@@ -4,6 +4,8 @@ Use this workflow before migration advice or frontend impact analysis. The IDs b
 
 ## Compare Two Published Versions
 
+Resolve the requested branch names with `list_document_branches` and select the two versions from `list_api_versions` by `branch_id` and `version_name`. Report both branch/version selections, especially for a cross-branch comparison. Do not silently compare the newest entries across all branches.
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -41,4 +43,4 @@ Use the returned diff items as the source of truth. For each item, preserve fiel
 }
 ```
 
-Report `must_handle` / breaking items first, then optional/non-breaking items. Do not claim a breaking change unless Vdoc MCP returned `is_breaking` or `must_handle` for that item.
+Report required/breaking items first, then optional/non-breaking items. Preserve `must_handle` and `is_breaking` independently; a required fix is not automatically a breaking change.
