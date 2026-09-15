@@ -11,7 +11,7 @@ Read this reference when creating, updating, inspecting, or submitting a draft. 
 
 Use list_document_branches to resolve the requested branch name even when the document has no published versions. Existing published versions are not a prerequisite for a first draft. Creating projects/documents/branches is an Admin action outside the MCP draft tools.
 
-Draft updates require content but do not accept branch_id. version_name, changelog, and source_git_commit_id are optional update fields; omit unchanged metadata. Never use a version name or branch name as an ID.
+Draft updates require content and expected_revision from the draft snapshot used for editing, but do not accept branch_id. version_name, changelog, and source_git_commit_id are optional update fields; omit unchanged metadata. Never use a version name or branch name as an ID. Keep the revision returned by create, get, or update; send it as expected_revision on the next update. If FAILED_PRECONDITION is returned, reread and reconcile the current draft with local edits before retrying. Never substitute the latest revision and resend stale content blindly.
 
 get_doc_draft returns Markdown content. get_api_version_draft returns metadata and content hashes only: use the authorized local draft source when available, and check its hash when confirming an uncertain update. Do not treat get_latest_schema as the body of an unpublished draft.
 
@@ -57,6 +57,7 @@ Update a draft:
       "project_id": "proj_placeholder",
       "document_id": "doc_placeholder",
       "draft_id": "draft_placeholder",
+      "expected_revision": "revision_from_read",
       "version_name": "1.2.0",
       "changelog": "Update the draft after local schema correction.",
       "source_git_commit_id": "commit_placeholder",
@@ -186,6 +187,7 @@ Choose the payload matching the requested Markdown action; these are separate op
       "project_id": "proj_placeholder",
       "document_id": "doc_placeholder",
       "draft_id": "draft_placeholder",
+      "expected_revision": "revision_from_read",
       "version_name": "1.2.0",
       "changelog": "Refine the Markdown draft after review.",
       "source_git_commit_id": "commit_placeholder",
