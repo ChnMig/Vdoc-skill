@@ -25,7 +25,7 @@ examples/
 
 ## Install
 
-First [download and verify the Compose workspace bootstrap](https://vibe-doc.com/en/deployment). Its [source lock](https://github.com/ChnMig/Vdoc-site/blob/main/workspace/workspace.lock.json) is also browsable in Vdoc-site. Run the installation commands below from the extracted `vdoc-workspace` directory, or set `VDOC_WORKSPACE_LOCK` to its absolute lock path.
+First [download and verify the Compose workspace bootstrap](https://chnmig.github.io/Vdoc-site/en/deployment). Its [source lock](https://github.com/ChnMig/Vdoc-site/blob/main/workspace/workspace.lock.json) is also browsable in Vdoc-site. Run the installation commands below from the extracted `vdoc-workspace` directory, or set `VDOC_WORKSPACE_LOCK` to its absolute lock path.
 
 Install the exact commit pinned by the workspace release lock into the standard
 agent skill directory, with `SKILL.md` at the `vdoc` skill root:
@@ -49,7 +49,7 @@ test -f "$VDOC_SKILL_DIR/SKILL.md"
 The command derives its commit from the external reviewed lock so this
 repository does not make an impossible self-referential claim about its own
 future commit. The reviewed lock is distributed in the checksummed
-[Vdoc-site Docker Compose workspace bootstrap](https://vibe-doc.com/en/deployment);
+[Vdoc-site Docker Compose workspace bootstrap](https://chnmig.github.io/Vdoc-site/en/deployment);
 verify its `.sha256` file before running the workspace initializer. If the
 target already exists, verify its current `HEAD`; upgrade only by fetching and
 checking out the commit from a newer reviewed lock. Do not use an unpinned
@@ -100,7 +100,7 @@ The dry-run does not publish packages or deploy services.
 
 For a new version, update `package.json` and `package-lock.json` together with `npm version 0.1.1 --no-git-tag-version` (substitute the intended version), commit the changes, and push the matching `v0.1.1` tag. CI requires the tag to match both manifests, runs the existing checks, and creates a [GitHub Release](https://github.com/ChnMig/Vdoc-skill/releases) containing `vdoc-skill-<version>.tgz` and `SHA256SUMS`. A tag such as `v0.1.1-rc.1` creates a prerelease; ordinary branch pushes and pull requests run checks only. Existing releases are not overwritten.
 
-For local packaging, run `npm run release:package -- v0.1.0` with the version in the manifests. Output stays in the ignored `.artifacts/release/` directory. The workflow uploads the installable package to GitHub Releases; npm registry publication remains separate.
+For local packaging, run `npm run release:package -- v0.2.0` with the version in the manifests. Output stays in the ignored `.artifacts/release/` directory. The workflow uploads the installable package to GitHub Releases; npm registry publication remains separate.
 
 After downloading a release matching the reviewed workspace lock and verifying `SHA256SUMS`, extract its `package/` contents into a new Skill directory with `--strip-components=1`, so `SKILL.md` is directly at the `vdoc` skill root. The archive includes references, templates, examples, and evaluation cases.
 

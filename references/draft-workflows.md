@@ -13,7 +13,7 @@ Use list_document_branches to resolve the requested branch name even when the do
 
 Draft updates require content and expected_revision from the draft snapshot used for editing, but do not accept branch_id. version_name, changelog, and source_git_commit_id are optional update fields; omit unchanged metadata. Never use a version name or branch name as an ID. Keep the revision returned by create, get, or update; send it as expected_revision on the next update. If FAILED_PRECONDITION is returned, reread and reconcile the current draft with local edits before retrying. Never substitute the latest revision and resend stale content blindly.
 
-get_doc_draft returns Markdown content. get_api_version_draft returns metadata and content hashes only: use the authorized local draft source when available, and check its hash when confirming an uncertain update. Do not treat get_latest_schema as the body of an unpublished draft.
+get_doc_draft returns Markdown content. In v0.2, get_api_version_draft returns metadata and revision at the top level and raw OpenAPI in content.content; content.hash matches raw_content_hash. Read the body and revision together before editing, and pass that revision as expected_revision. Do not treat get_latest_schema as the body of an unpublished draft. Older backends without draft content need an authorized local source file or an upgrade.
 
 If a write times out, its outcome is unknown. When draft_id is known, read it before retrying an update or submission. An uncertain create without a returned ID cannot be recovered by a draft list tool in the current API: stop duplicate creates and report that the user should inspect Admin. Do not claim success from an attempted call.
 
@@ -98,7 +98,8 @@ Get latest Markdown content:
     "name": "get_latest_doc",
     "arguments": {
       "project_id": "proj_placeholder",
-      "document_id": "doc_placeholder"
+      "document_id": "doc_placeholder",
+      "branch_id": "branch_dev"
     }
   }
 }

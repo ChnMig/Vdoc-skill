@@ -47,11 +47,11 @@ Use [comparison examples](examples/compare-versions-example.md) or the [frontend
 
 ## Markdown lookup and drafts
 
-- For current published Markdown, call get_latest_doc with the selected branch_id and check the returned version. For OpenAPI content, use get_latest_schema the same way. These tools return the latest content on a branch, not an arbitrary historical snapshot.
+- For current published Markdown, call get_latest_doc with the required, explicitly selected branch_id and check the returned version. For OpenAPI content, use get_latest_schema the same way. For an exact historical snapshot, call get_doc_version (Markdown) or get_schema_version (OpenAPI) with project_id, document_id and the selected version_id. Never send version_id to a latest-content tool; unsupported arguments are rejected in v0.2.
 - Read an existing Markdown document before editing it. A document without published versions can receive its first draft using a discovered branch_id and user-provided content.
 - For a new draft, create once using branch_id, version_name and schema_content (OpenAPI) or markdown_content (Markdown).
 - For an existing draft, read it with get_api_version_draft or get_doc_draft, then update if requested. Updates preserve the branch; do not send branch_id or overwrite unchanged metadata.
-- get_api_version_draft returns metadata and hashes, not the draft body. Use an available authorized source file for proposed OpenAPI edits, or obtain the current draft source; do not substitute a published schema for unpublished draft content. Its returned raw_content_hash can help confirm an uncertain update against the intended source.
+- get_api_version_draft returns the existing metadata and revision plus content.content containing the raw OpenAPI draft, with its hash and draft_id. These fields come from one snapshot. Edit that body and pass the same expected_revision when updating; do not substitute published content for an unpublished draft. A historical backend without content requires an authorized source file or an upgrade.
 - Submit only when requested. There is no mandatory create → update → submit sequence. Confirm the returned state and draft ID in the result.
 - After a timeout or disconnection, report an unknown outcome. Read a known draft_id before retrying. If creation returned no ID, avoid a duplicate create and ask the user to inspect the draft in Admin.
 
@@ -81,6 +81,8 @@ create_doc_draft
 update_doc_draft
 submit_doc_draft
 get_doc_draft
+get_schema_version
+get_doc_version
 ```
 <!-- VDOC_MCP_TOOL_INVENTORY_END -->
 
